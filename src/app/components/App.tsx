@@ -3,6 +3,8 @@ import "../styles/ui.css";
 import { SpellingErrors, fetchSpellCheck } from "../../spellCheck";
 
 const App = ({}) => {
+  // textNodeIds and spellingErrors should have matching indices
+  // eg. spellingErrors[0] should refer to textNodeIds[0]
   const [textNodeIds, setTextNodeIds] = React.useState<string[]>([]);
   const [spellingErrors, setSpellingErrors] = React.useState<SpellingErrors>(
     []
