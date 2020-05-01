@@ -41,20 +41,22 @@ export type SpellingErrors = Array<
 export async function fetchSpellCheck(
   strings: string[]
 ): Promise<SpellingErrors> {
-  const url = createURLForStrings(strings).toString();
-
-  const response = await fetch(url);
-  const data = await response.json();
-
-  return data;
-}
-
-function createURLForStrings(strings: string[]) {
-  const url = new URL(yandexEndpoint);
-
-  strings.forEach(string => {
-    url.searchParams.append("text", string);
+  // A lot of trial and error went into figuring this out.
+  // This Content-Type header is required to make the request work.
+  const response = await fetch(yandexEndpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: textStringsToBodyData(strings)
   });
 
-  return url;
+  return await response.json();
+}
+
+/** Create a `body` formatted in the way that Yandex expects */
+function textStringsToBodyData(strings: string[]): string {
+  const searchParams = new URLSearchParams();
+  strings.forEach(string => searchParams.append("text", string));
+  return searchParams.toString();
 }
