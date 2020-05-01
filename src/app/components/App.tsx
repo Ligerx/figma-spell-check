@@ -1,5 +1,6 @@
 import * as React from "react";
 import "../styles/ui.css";
+import { fetchSpellCheck } from "../../spellCheck";
 
 const App = ({}) => {
   // React.useEffect(() => {
@@ -13,20 +14,15 @@ const App = ({}) => {
   // }, []);
 
   React.useEffect(() => {
-    async function testSpellChecker() {
+    async function blook() {
       try {
-        const response = await fetch(
-          "https://speller.yandex.net/services/spellservice.json/checkTexts?text=boook&text=finis"
-        );
-        const data = await response.json();
-        console.log(data);
-        console.log("inside the try");
+        const blah = await fetchSpellCheck(["blook"]);
+        console.log(blah);
       } catch (error) {
-        console.error(error);
+        console.log("caught error in app", error);
       }
     }
-
-    testSpellChecker();
+    blook();
   }, []);
 
   return <div></div>;
