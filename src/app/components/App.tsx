@@ -9,7 +9,7 @@ const App = ({}) => {
   );
 
   React.useEffect(() => {
-    window.onmessage = async event => {
+    window.onmessage = async (event) => {
       const { type, payload } = event.data.pluginMessage;
 
       if (type === "fetchSpellCheck") {
