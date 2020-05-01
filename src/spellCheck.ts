@@ -19,19 +19,15 @@ const yandexEndpoint =
  *
  * s - hint (may be several or may be absent)
  */
-export type SpellingErrors = Array<
-  [
-    {
-      code: number;
-      pos: number;
-      row: number;
-      col: number;
-      len: number;
-      word: string;
-      s: string[];
-    }
-  ]
->;
+export type SpellingErrors = {
+  code: number;
+  pos: number;
+  row: number;
+  col: number;
+  len: number;
+  word: string;
+  s: string[];
+}[][];
 
 /**
  * Fetches spell check data from the yandex api.

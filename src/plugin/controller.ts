@@ -7,7 +7,7 @@ function init() {
 
   figma.ui.postMessage({
     type: "fetchSpellCheck",
-    payload: findAllTextStrings()
+    payload: findAllTextStringsAndIds()
   });
 }
 
@@ -15,10 +15,7 @@ function setupMessageListeners() {
   figma.ui.onmessage = message => {
     const { type, payload } = message;
 
-    if (type === "fetchSpellCheckSuccess") {
-      // TODO
-      console.log("got this from the UI", payload);
-    } else if (type === "zoomToNode") {
+    if (type === "zoomToNode") {
       const { nodeId }: { nodeId: string } = payload;
 
       const node = figma.root.findOne(node => node.id === nodeId);
@@ -32,12 +29,15 @@ function setupMessageListeners() {
   };
 }
 
-function findAllTextStrings(): string[] {
+function findAllTextStringsAndIds(): { strings: string[]; nodeIds: string[] } {
   const textNodes = figma.root.findAll(
     node => node.type === "TEXT"
   ) as TextNode[];
 
-  return textNodes.map(textNode => textNode.characters);
+  const nodeIds = textNodes.map(node => node.id);
+  const strings = textNodes.map(textNode => textNode.characters);
+
+  return { strings, nodeIds };
 }
 
 // figma.closePlugin();
