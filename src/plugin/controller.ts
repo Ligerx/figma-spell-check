@@ -25,19 +25,25 @@
 //     figma.closePlugin();
 // };
 
-// async function testSpellChecker() {
-//   try {
-//     const response = await fetch(
-//       "https://speller.yandex.net/services/spellservice.json/checkTexts?text=boook&text=goooogle"
-//     );
-//     const data = await response.json();
-//     console.log(data);
-//     console.log("inside the try");
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
 figma.showUI(__html__);
+
+function init() {
+  const textNodes = figma.root.findAll(
+    node => node.type === "TEXT"
+  ) as TextNode[];
+  const textStrings = textNodes.map(textNode => textNode.characters);
+
+  figma.ui.postMessage({ type: "fetchSpellCheck", payload: textStrings });
+
+  figma.ui.onmessage = message => {
+    const { type, payload } = message;
+
+    if (type === "fetchSpellCheckSuccess") {
+      console.log("got this from the UI", payload);
+    }
+  };
+}
+
+init();
 
 // figma.closePlugin();

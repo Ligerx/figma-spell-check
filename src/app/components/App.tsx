@@ -3,26 +3,27 @@ import "../styles/ui.css";
 import { fetchSpellCheck } from "../../spellCheck";
 
 const App = ({}) => {
-  // React.useEffect(() => {
-  //     // This is how we read messages sent from the plugin controller
-  //     window.onmessage = (event) => {
-  //         const { type, message } = event.data.pluginMessage;
-  //         if (type === 'create-rectangles') {
-  //             console.log(`Figma Says: ${message}`);
-  //         };
-  //     }
-  // }, []);
-
   React.useEffect(() => {
-    async function blook() {
-      try {
-        const blah = await fetchSpellCheck(["blook"]);
-        console.log(blah);
-      } catch (error) {
-        console.log("caught error in app", error);
+    window.onmessage = async event => {
+      const { type, payload } = event.data.pluginMessage;
+      if (type === "fetchSpellCheck") {
+        try {
+          const spellingErrors = await fetchSpellCheck(payload as string[]);
+          parent.postMessage(
+            {
+              pluginMessage: {
+                type: "fetchSpellCheckSuccess",
+                payload: spellingErrors
+              }
+            },
+            "*"
+          );
+        } catch (error) {
+          figma.notify("Failed to connect to spell check server.");
+          console.error(error);
+        }
       }
-    }
-    blook();
+    };
   }, []);
 
   return <div></div>;
