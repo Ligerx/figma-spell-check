@@ -5,7 +5,7 @@ type Props = {
   // https://github.com/thomas-lowry/figma-plugin-ds#icon
   iconName: string;
   onClick: any; // TODO update
-  disabled: boolean;
+  disabled?: boolean;
   className?: string;
 };
 

@@ -74,12 +74,11 @@ const App = ({}) => {
           onClick={onNextClick}
         />
       </div>
-
       <div className="type">
         Change <strong>{spellingErrors[currentIndex]?.word}</strong> to:
       </div>
 
-      <div></div>
+      <IconButton iconName={"icon--swap"} onClick={() => {}} />
     </div>
   );
 };
