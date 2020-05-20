@@ -44,13 +44,20 @@ const App = ({}) => {
     };
   }, []);
 
-  const onPrevClick = () => {
+  const handlePrevClick = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
-  const onNextClick = () => {
+  const handleNextClick = () => {
     setCurrentIndex(currentIndex + 1);
   };
+
+  const handleSuggestionClick = (suggestion: string) => () => {
+    console.log();
+    //
+  };
+
+  const error = spellingErrors[currentIndex];
 
   if (isLoading) {
     return <div>Checking your file...</div>;
@@ -66,17 +73,26 @@ const App = ({}) => {
         <IconButton
           iconName={"icon--back"}
           disabled={currentIndex <= 0}
-          onClick={onPrevClick}
+          onClick={handlePrevClick}
         />
         <IconButton
           iconName={"icon--forward"}
           disabled={currentIndex >= spellingErrors.length - 1}
-          onClick={onNextClick}
+          onClick={handleNextClick}
         />
       </div>
       <div className="type">
-        Change <strong>{spellingErrors[currentIndex]?.word}</strong> to:
+        Change <strong>{error.word}</strong> to:
       </div>
+
+      {error.s.map((suggestion) => (
+        <button
+          className="button button--secondary"
+          onClick={handleSuggestionClick(suggestion)}
+        >
+          {suggestion}
+        </button>
+      ))}
 
       <IconButton iconName={"icon--swap"} onClick={() => {}} />
     </div>

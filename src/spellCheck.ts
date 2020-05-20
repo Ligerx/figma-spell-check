@@ -89,17 +89,4 @@ export function augmentSpellingErrors(
   return spellingErrors;
 }
 
-// /**
-//  * Find the index of the next error of a given `errors` array.
-//  * @param errors
-//  * @param afterIndex optional, by default does not skip any array items.
-//  * @returns Returns the index of the first error after `afterIndex`, and -1 otherwise.
-//  */
-// export function findIndexOfNextError(
-//   errors: SpellingErrors,
-//   afterIndex: number = -1
-// ): number {
-//   // Skip over any errors before afterIndex.
-//   // Using .findIndex() is nice because it handles empty array and end of array edge cases for you.
-//   return errors.findIndex((_, index) => afterIndex >= index);
-// }
+function replaceErrorWithSuggestion(): SpellingErrors {}
