@@ -46,10 +46,12 @@ const App = ({}) => {
 
   const handlePrevClick = () => {
     setCurrentIndex(currentIndex - 1);
+    // todo focus correct text element
   };
 
   const handleNextClick = () => {
     setCurrentIndex(currentIndex + 1);
+    // todo focus correct text element
   };
 
   const handleSuggestionClick = (suggestion: string) => () => {

@@ -32,13 +32,18 @@ type YandexSpellingError = {
 type YandexSpellingErrorsReturn = YandexSpellingError[][];
 
 /**
+ * One spelling error with its corresponding `string` and `nodeId`.
+ */
+type SpellingError = {
+  string: string;
+  nodeId: string;
+} & YandexSpellingError;
+
+/**
  * Flat list of every spelling error with its corresponding `string` and `nodeId`.
  * There will likely be many array items with duplicate `nodeId`s, so make sure to search and edit the entire list.
  */
-export type SpellingErrors = ({
-  string: string;
-  nodeId: string;
-} & YandexSpellingError)[];
+export type SpellingErrors = SpellingError[];
 
 /**
  * Fetches spell check data from the yandex api.
@@ -89,4 +94,37 @@ export function augmentSpellingErrors(
   return spellingErrors;
 }
 
-function replaceErrorWithSuggestion(): SpellingErrors {}
+function replaceErrorWithSuggestion(
+  errors: SpellingErrors,
+  index: number,
+  suggestion: string
+): SpellingErrors {
+  const error = errors[index];
+  const position = error.pos;
+  const lengthDifference = error.len - suggestion.length;
+
+  const newString = replaceBetween(
+    position,
+    position + error.len,
+    error.string,
+    suggestion
+  );
+
+  // todo how do you update things on the figma side?
+  // maybe return a tuple with the updated errors plus the new string?
+  // maybe also return the new index here as well?
+
+  // track a new index?
+  // remove the error from the array
+  // update all other errors that point to the same nodeId so that their pos offset is correct.
+  //    I think I can ignore row and col for now cause I'm not using them. Just leave a note in the type def.
+  // also send over the updated string so figma backend can update
+  //
+  // on figma backend, you replace the existing string with the new string
+  //    crap do I have to worry about preserving styling.......
+  // in the UI, the interface is simply updated
+}
+
+function replaceBetween(start, end, string, replacement) {
+  return string.substring(0, start) + replacement + string.substring(end);
+}
